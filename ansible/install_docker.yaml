@@ -1,0 +1,24 @@
+- name: Install Docker via script
+  hosts: server
+  become: yes
+  tasks:
+    - name: Install curl
+      apt:
+        name: curl
+        state: present
+
+    - name: Download Docker installation script
+      command: curl -fsSL https://get.docker.com -o get-docker.sh
+      
+    - name: Install Docker
+      command: sh ./get-docker.sh
+      args:
+        creates: /usr/bin/docker
+      
+    - name: Remove installation script
+      command: rm ./get-docker.sh
+
+    - name: Install Docker compose
+      apt:
+        name: docker-compose-plugin
+        state: present

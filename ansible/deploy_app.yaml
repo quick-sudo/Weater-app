@@ -1,0 +1,14 @@
+- hosts: server
+  become: yes
+  tasks:
+    - name: Copy app files
+      copy:
+        src: ../app/
+        dest: /opt/app
+
+    - name: Build app container
+      command: docker build -t weather-app /opt/app/
+
+    - name: Run app container
+      command: docker run -d --restart=always --name weather-app -p 5000:5000 weather-app
+      ignore_errors: yes
